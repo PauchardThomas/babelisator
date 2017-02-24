@@ -31,6 +31,9 @@ namespace Babelisator
 
         }
 
+        /// <summary>
+        /// Load jsx folder list
+        /// </summary>
         private void loadList()
         {
            if(jsxpath.Text != null)
@@ -47,6 +50,11 @@ namespace Babelisator
             }
         }
 
+        /// <summary>
+        /// Select JS folder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void jsFolder_Click(object sender, RoutedEventArgs e)
         {
             var path = opendialog();
@@ -57,6 +65,11 @@ namespace Babelisator
             }
         }
 
+        /// <summary>
+        /// Select JSX folder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void jsxFolder_Click(object sender, RoutedEventArgs e)
         {
             var path = opendialog();
@@ -65,7 +78,26 @@ namespace Babelisator
                 jsxpath.Text = path;
             }
         }
+        /// <summary>
+        /// Select babel path
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void babelFile_Click(object sender, RoutedEventArgs e)
+        {
+            var ofd = new OpenFileDialog();
+            ofd.ShowDialog();
+            string path = ofd.FileName;
+            if (path != null)
+            {
+                babelpath.Text = path;
+            }
+        }
 
+        /// <summary>
+        /// OpenDialog
+        /// </summary>
+        /// <returns></returns>
         public string opendialog()
         {
             var dialog = new FolderBrowserDialog();
@@ -73,6 +105,10 @@ namespace Babelisator
             return dialog.SelectedPath;
         }
 
+        /// <summary>
+        /// Write and execute conversion
+        /// </summary>
+        /// <param name="message"></param>
         static void write(string message)
         {
             try
@@ -121,6 +157,11 @@ namespace Babelisator
             Console.WriteLine(e.Data);
         }
 
+        /// <summary>
+        /// Loop files to convert
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void convert_Click(object sender, RoutedEventArgs e)
         {
             if(jspath != null && jsxpath != null)
@@ -128,8 +169,6 @@ namespace Babelisator
                 foreach (ListBoxItem item in toconvert.Items)
                 {
                     string fileToConvert = item.Content.ToString();
-                    Console.WriteLine(fileToConvert);
-                    Console.WriteLine(babelpath + " " + jsxpath.Text + "\\" + fileToConvert + " --out-file " + jspath.Text + "\\" + fileToConvert);
                     write(babelpath + " " + jsxpath.Text + "\\" + fileToConvert + " --out-file " + jspath.Text + "\\" + fileToConvert);
                 }
                
@@ -139,7 +178,7 @@ namespace Babelisator
             }
 
         }
-
+        #region DragAndDropFunctions
         private void jsfiles_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (_dragged != null)
@@ -190,16 +229,6 @@ namespace Babelisator
             jsxfiles.Items.Remove(_dragged);
             toconvert.Items.Add(_dragged);
         }
-
-        private void babelFile_Click(object sender, RoutedEventArgs e)
-        {
-            var ofd = new OpenFileDialog();
-            ofd.ShowDialog();
-            string path = ofd.FileName;
-            if (path != null)
-            {
-                babelpath.Text = path;
-            }
-        }
+        #endregion
     }
 }
